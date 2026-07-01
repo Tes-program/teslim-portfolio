@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('writing')).sort((a, b) => {
+  if (a.data.status === 'published' && b.data.status === 'published') {
+    return (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0);
+  }
+  if (a.data.status !== b.data.status) return a.data.status === 'published' ? -1 : 1;
+  return a.data.order - b.data.order;
+});
+
+const hasQueued = entries.some((e) => e.data.status === 'queued');
+---
+
+<BaseLayout title="Writing — Teslim" active="writing">
+  <h1>Writing</h1>
+  <p class="role">Longer pieces — postmortems, architecture decisions, tradeoff analyses.</p>
+
+  <div class="section-label">Articles</div>
+
+  {entries.map((entry) => (
+    <div class="post">
+      <div class="post-date">
+        {entry.data.status === 'published'
+          ? entry.data.date?.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+          : 'Coming soon'}
+      </div>
+      {entry.data.status === 'published' ? (
+        <h3><a href={`/writing/${entry.id}/`}>{entry.data.title}</a></h3>
+      ) : (
+        <h3>{entry.data.title}</h3>
+      )}
+      <p>{entry.data.summary}</p>
+    </div>
+  ))}
+
+  {hasQueued && (
+    <p style="margin-top:32px; color: var(--muted); font-size:14.5px;">This list is intentionally short — these are queued, not published yet. New pieces show up here as they're written.</p>
+  )}
+</BaseLayout>

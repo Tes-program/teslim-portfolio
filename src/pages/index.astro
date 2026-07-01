@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Entry from '../components/Entry.astro';
+import { getCollection, render } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const featured = allProjects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const rendered = await Promise.all(featured.map((entry) => render(entry)));
+---
+
+<BaseLayout
+  title="Teslim — Backend Engineer"
+  description="Teslim is a backend engineer building payments and fintech infrastructure out of Lagos, Nigeria."
+  active="me"
+>
+  <h1>Teslim</h1>
+  <p class="role">Backend Engineer — Payments &amp; Fintech Infrastructure</p>
+
+  <p>I build the systems that move money correctly: recurring billing, payout pipelines, multi-tenant SaaS platforms, and the reconciliation logic nobody notices until it's wrong. Most of my production work lives in TypeScript/NestJS, with Java and Spring Boot as a second language for the same kind of problems.</p>
+
+  <p>Lately that's meant rebuilding a recurring donations engine around per-record delayed jobs instead of cron sweeps, diagnosing a payout pipeline that was routing through the wrong provider, and building a multi-tenant staffing platform from the ground up. I write some of this up as I go — partly for other engineers, mostly so I don't forget how I solved it.</p>
+
+  <p>Outside of work: football, basketball, technical reading, playing games, and slowly working through a backlog of system design books I keep promising myself I'll finish.</p>
+
+  <div class="links-row">
+    <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:teslimodumuyiwa@gmail.com">Email</a>
+  </div>
+
+  <div class="section-label">Recently shipped</div>
+
+  {featured.map((entry, i) => {
+    const { Content } = rendered[i];
+    return (
+      <Entry
+        hash={entry.data.hash}
+        title={entry.data.title}
+        context={entry.data.context}
+        dateRange={entry.data.dateRange}
+        tags={entry.data.tags}
+      >
+        <Content />
+      </Entry>
+    );
+  })}
+
+  <p style="margin-top:24px;"><a href="/projects/" class="entry-link">→ all projects</a></p>
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+import { quotes } from '../data/quotes';
+---
+
+<footer class="footer">
+  <p class="footer-quote" id="footer-quote"></p>
+  <div class="footer-meta" id="footer-meta">Lagos, NG</div>
+</footer>
+
+<script define:vars={{ quotes }}>
+  function pickQuote() {
+    const el = document.getElementById('footer-quote');
+    if (!el || !quotes.length) return;
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+    el.textContent = quote.attribution ? `"${quote.text}" — ${quote.attribution}` : quote.text;
+  }
+
+  function tick() {
+    const el = document.getElementById('footer-meta');
+    if (!el) return;
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    el.textContent = time + ' · Lagos, NG · ' + now.getFullYear();
+  }
+
+  pickQuote();
+  tick();
+  setInterval(tick, 30000);
+</script>

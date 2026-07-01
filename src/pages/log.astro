@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MonthSlider from '../components/MonthSlider.astro';
+import { getCollection, render } from 'astro:content';
+
+const allEntries = (await getCollection('log')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const rendered = await Promise.all(allEntries.map((entry) => render(entry)));
+const contentById = new Map(allEntries.map((entry, i) => [entry.id, rendered[i].Content]));
+
+function monthKey(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+}
+function monthLabel(date: Date) {
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
+function monthShortLabel(date: Date) {
+  const short = date.toLocaleDateString('en-US', { month: 'short' });
+  return `${short} '${String(date.getFullYear()).slice(-2)}`;
+}
+function monthsSinceEpoch(date: Date) {
+  return date.getFullYear() * 12 + date.getMonth();
+}
+
+const groups = [];
+for (const entry of allEntries) {
+  const key = monthKey(entry.data.date);
+  const current = groups[groups.length - 1];
+  if (!current || current.key !== key) {
+    groups.push({
+      key,
+      label: monthLabel(entry.data.date),
+      shortLabel: monthShortLabel(entry.data.date),
+      date: entry.data.date,
+      count: 0,
+      entries: [] as typeof allEntries,
+      gapAfter: false,
+    });
+  }
+  const group = groups[groups.length - 1];
+  group.count++;
+  group.entries.push(entry);
+}
+
+for (let i = 0; i < groups.length - 1; i++) {
+  groups[i].gapAfter = monthsSinceEpoch(groups[i].date) - monthsSinceEpoch(groups[i + 1].date) > 1;
+}
+---
+
+<BaseLayout title="Log — Teslim" active="log">
+  <h1>Engineering Log</h1>
+  <p class="role">Short, weekly. What I worked on, not why it matters.</p>
+
+  {groups.map((group) => (
+    <>
+      <h2 id={`log-${group.key}`} class="section-label" data-month-heading>{group.label}</h2>
+      {group.entries.map((entry) => {
+        const Content = contentById.get(entry.id)!;
+        return (
+          <div class="log-entry">
+            <div class="log-week">{entry.data.week}</div>
+            <div><Content /></div>
+          </div>
+        );
+      })}
+    </>
+  ))}
+
+  <p style="margin-top:32px; color: var(--muted); font-size:14.5px;">This log updates roughly weekly. No polish, just what shipped.</p>
+
+  <MonthSlider groups={groups} />
+</BaseLayout>

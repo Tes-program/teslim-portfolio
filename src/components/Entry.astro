@@ -1,0 +1,24 @@
+---
+interface Props {
+  hash: string;
+  title: string;
+  context: string;
+  dateRange?: string;
+  tags: string[];
+}
+
+const { hash, title, context, dateRange, tags } = Astro.props;
+const meta = dateRange ? `${context} · ${dateRange}` : context;
+---
+
+<div class="entry">
+  <div class="entry-hash">{hash}</div>
+  <div class="entry-body">
+    <h3>{title}</h3>
+    <div class="entry-meta">{meta}</div>
+    <slot />
+    <div class="tag-row">
+      {tags.map((tag) => <span class="tag">{tag}</span>)}
+    </div>
+  </div>
+</div>

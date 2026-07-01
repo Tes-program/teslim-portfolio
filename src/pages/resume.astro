@@ -1,31 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resume — Teslim</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<div class="wrap">
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
 
-  <nav class="nav">
-    <a class="nav-avatar" href="index.html" aria-label="Home">T</a>
-    <div class="nav-links">
-      <a href="index.html">Me</a>
-      <a href="writing.html">Writing</a>
-      <a href="log.html">Log</a>
-      <a href="projects.html">Projects</a>
-      <a href="resume.html" class="active">Resume</a>
-    </div>
-  </nav>
-
+<BaseLayout title="Resume — Teslim" active="resume">
   <h1>Resume</h1>
   <p class="role">Backend Engineer — Payments &amp; Fintech Infrastructure</p>
 
-  <p><a href="resume.pdf" target="_blank" rel="noopener">→ Download PDF</a></p>
+  <p><a href="https://docs.google.com/document/d/e/2PACX-1vQEGgJJPgNOl2rtp21XD413tUy525W-usaYaGPb6unv5q3CvmKjhMVvNULUWGABEFg8966O_5vPw0pZ/pub" target="_blank" rel="noopener">→ View resume</a></p>
 
   <div class="section-label">Experience</div>
 
@@ -78,23 +59,4 @@
 
   <div class="section-label">Stack</div>
   <p style="font-family: var(--mono); font-size: 13px; color: var(--muted);">TypeScript · NestJS · Java · Spring Boot · PostgreSQL · MongoDB · Redis · BullMQ · Kafka · AWS SES · Docker</p>
-
-  <footer class="footer">
-    <p class="footer-quote">Full version on request.</p>
-    <div class="footer-meta" id="footer-meta">Lagos, NG · 2026</div>
-  </footer>
-
-</div>
-<script>
-  function tick() {
-    const el = document.getElementById('footer-meta');
-    if (!el) return;
-    const now = new Date();
-    const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    el.textContent = time + ' · Lagos, NG · ' + now.getFullYear();
-  }
-  tick();
-  setInterval(tick, 30000);
-</script>
-</body>
-</html>
+</BaseLayout>

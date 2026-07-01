@@ -1,0 +1,24 @@
+---
+interface Props {
+  active: 'me' | 'writing' | 'log' | 'projects' | 'resume';
+}
+
+const { active } = Astro.props;
+
+const links = [
+  { key: 'me', href: '/', label: 'Me' },
+  { key: 'writing', href: '/writing/', label: 'Writing' },
+  { key: 'log', href: '/log/', label: 'Log' },
+  { key: 'projects', href: '/projects/', label: 'Projects' },
+  { key: 'resume', href: '/resume/', label: 'Resume' },
+] as const;
+---
+
+<nav class="nav">
+  <a class="nav-avatar" href="/" aria-label="Home">T</a>
+  <div class="nav-links">
+    {links.map((link) => (
+      <a href={link.href} class={link.key === active ? 'active' : undefined}>{link.label}</a>
+    ))}
+  </div>
+</nav>

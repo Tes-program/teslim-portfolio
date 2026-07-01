@@ -1,0 +1,50 @@
+---
+interface Group {
+  key: string;
+  shortLabel: string;
+  count: number;
+  gapAfter: boolean;
+}
+
+interface Props {
+  groups: Group[];
+}
+
+const { groups } = Astro.props;
+---
+
+<nav class="month-slider" aria-label="Jump to month">
+  {groups.map((group) => (
+    <>
+      <a href={`#log-${group.key}`} class="month-slider-tick">
+        <span class="tick-mark" aria-hidden="true"></span>
+        <span class="tick-label">{group.shortLabel}</span>
+      </a>
+      {group.gapAfter && <span class="month-slider-gap" aria-hidden="true">⋮</span>}
+    </>
+  ))}
+</nav>
+
+<script>
+  const nav = document.querySelector('.month-slider');
+  if (nav) {
+    const links = Array.from(nav.querySelectorAll('a'));
+    const linkByHash = new Map(links.map((a) => [a.getAttribute('href'), a]));
+    const headings = document.querySelectorAll('[data-month-heading]');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const link = linkByHash.get(`#${entry.target.id}`);
+          if (!link) continue;
+          links.forEach((l) => l.classList.remove('active'));
+          link.classList.add('active');
+        }
+      },
+      { rootMargin: '0px 0px -70% 0px', threshold: 0 }
+    );
+
+    headings.forEach((h) => observer.observe(h));
+  }
+</script>

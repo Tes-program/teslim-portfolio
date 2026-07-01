@@ -126,6 +126,7 @@ a:hover { text-decoration-color: var(--accent); }
 .section-label {
   font-family: var(--mono);
   font-size: 12px;
+  font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--muted);
@@ -236,6 +237,11 @@ a:hover { text-decoration-color: var(--accent); }
 }
 .log-entry:last-child { border-bottom: none; }
 
+.log-entry p {
+  margin: 0;
+  max-width: none;
+}
+
 .log-week {
   font-family: var(--mono);
   font-size: 11px;
@@ -299,4 +305,74 @@ a:hover { text-decoration-color: var(--accent); }
   .entry-hash { padding-top: 0; }
   .footer { flex-direction: column; align-items: flex-start; }
   .footer-meta { text-align: left; }
+}
+
+/* ---- log month slider ---- */
+.month-slider {
+  display: none;
+  position: fixed;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+@media (min-width: 900px) {
+  .month-slider { display: flex; }
+}
+
+.month-slider-tick {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+  padding: 2px 0;
+}
+
+.month-slider-tick .tick-mark {
+  width: 10px;
+  height: 1px;
+  background: var(--line);
+  transition: background 0.15s ease, width 0.15s ease;
+}
+
+.month-slider-tick .tick-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.month-slider-tick:hover .tick-label { color: var(--ink); }
+
+.month-slider-tick.active .tick-mark {
+  width: 14px;
+  background: var(--accent);
+}
+
+.month-slider-tick.active .tick-label { color: var(--ink); }
+
+.month-slider-tick.active .tick-label::before {
+  content: '> ';
+  color: var(--accent);
+}
+
+.month-slider-tick:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.month-slider-gap {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1;
+  color: var(--muted);
+  opacity: 0.5;
+  margin: 2px 0;
 }

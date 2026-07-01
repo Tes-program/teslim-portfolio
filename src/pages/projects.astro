@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Entry from '../components/Entry.astro';
+import { getCollection, render } from 'astro:content';
+
+const allProjects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(allProjects.map((entry) => render(entry)));
+---
+
+<BaseLayout title="Projects — Teslim" active="projects">
+  <h1>Projects</h1>
+  <p class="role">Production systems, in commit-log order — most recent first.</p>
+
+  <div class="section-label">Production</div>
+
+  {allProjects.map((entry, i) => {
+    const { Content } = rendered[i];
+    return (
+      <Entry
+        hash={entry.data.hash}
+        title={entry.data.title}
+        context={entry.data.context}
+        dateRange={entry.data.dateRange}
+        tags={entry.data.tags}
+      >
+        <Content />
+      </Entry>
+    );
+  })}
+</BaseLayout>
