@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Teslim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="nav">
+    <a class="nav-avatar" href="index.html" aria-label="Home">T</a>
+    <div class="nav-links">
+      <a href="index.html">Me</a>
+      <a href="writing.html">Writing</a>
+      <a href="log.html">Log</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="resume.html">Resume</a>
+    </div>
+  </nav>
+
+  <h1>Projects</h1>
+  <p class="role">Production systems, in commit-log order — most recent first.</p>
+
+  <div class="section-label">Production</div>
+
+  <div class="entry">
+    <div class="entry-hash">a3f1c2e</div>
+    <div class="entry-body">
+      <h3>Crowdr — Recurring Donations Engine</h3>
+      <div class="entry-meta">NestJS · MongoDB · BullMQ · Redis · 2025–2026</div>
+      <p>Primary backend engineer on a crowdfunding platform. Rebuilt recurring billing from a cron-based sweep into a delayed-job model where each donation owns its own scheduled charge — better isolation, simpler retries. Also shipped guest donor magic-link auth, fraud/IP behavioral tracking, and a campaign flagging system.</p>
+      <div class="tag-row">
+        <span class="tag">Payments</span>
+        <span class="tag">Paystack</span>
+        <span class="tag">BudPay</span>
+        <span class="tag">Fraud detection</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-hash">9c4e7d0</div>
+    <div class="entry-body">
+      <h3>Baaraku — Multi-tenant Staffing Platform</h3>
+      <div class="entry-meta">NestJS · Prisma · PostgreSQL · Stripe · Cloudflare R2 · ongoing</div>
+      <p>Built a multi-tenant SaaS staffing platform from the ground up: invite-based auth, RBAC, tenant middleware, step-based candidate KYC, and a Chrome Manifest V3 extension for time tracking with idle detection and heartbeat survival. Designed a two-tier Trust/Verified timesheet model and an early-payout fee system on live mid-market rates.</p>
+      <div class="tag-row">
+        <span class="tag">Multi-tenant</span>
+        <span class="tag">Stripe</span>
+        <span class="tag">Chrome Extension</span>
+        <span class="tag">Documenso</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-hash">5a18b3f</div>
+    <div class="entry-body">
+      <h3>CareRound — Hospital Ward Management</h3>
+      <div class="entry-meta">Java 21 · Spring Boot · Kafka · Quartz JDBC · 2026</div>
+      <p>Capstone for the Moniepoint DreamDevs bootcamp: a multi-tenant hospital ward management SaaS using the transactional outbox pattern for reliable event delivery. Deployed to EC2 with Docker Compose and SSL via DuckDNS/Certbot, demoed end-to-end.</p>
+      <div class="tag-row">
+        <span class="tag">Kafka</span>
+        <span class="tag">Outbox Pattern</span>
+        <span class="tag">Docker</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-hash">e02a9c1</div>
+    <div class="entry-body">
+      <h3>RAIN — Investor Newsfeed Agent</h3>
+      <div class="entry-meta">Node.js · OpenAI · PDF generation · 2025</div>
+      <p>Diagnosed and fixed a cascade of production bugs in an AI chatbot: a wrong column name causing silent SQL failures, incomplete context loading, and a PDF generation crash on the Naira currency symbol. Earlier work included voice pipeline integration (Whisper/TTS) and an admin dashboard for managing chatbot context.</p>
+      <div class="tag-row">
+        <span class="tag">LLM tooling</span>
+        <span class="tag">Debugging</span>
+        <span class="tag">Postgres</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-hash">11f0d6a</div>
+    <div class="entry-body">
+      <h3>Audease — Student Information System</h3>
+      <div class="entry-meta">NestJS · PostgreSQL</div>
+      <p>Built a Student Information Management System for a UK-based edtech company, covering core academic records and administrative workflows.</p>
+      <div class="tag-row">
+        <span class="tag">EdTech</span>
+        <span class="tag">PostgreSQL</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p class="footer-quote">Sorted by recency, not importance.</p>
+    <div class="footer-meta" id="footer-meta">Lagos, NG · 2026</div>
+  </footer>
+
+</div>
+<script>
+  function tick() {
+    const el = document.getElementById('footer-meta');
+    if (!el) return;
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    el.textContent = time + ' · Lagos, NG · ' + now.getFullYear();
+  }
+  tick();
+  setInterval(tick, 30000);
+</script>
+</body>
+</html>

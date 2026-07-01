@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing — Teslim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="nav">
+    <a class="nav-avatar" href="index.html" aria-label="Home">T</a>
+    <div class="nav-links">
+      <a href="index.html">Me</a>
+      <a href="writing.html" class="active">Writing</a>
+      <a href="log.html">Log</a>
+      <a href="projects.html">Projects</a>
+      <a href="resume.html">Resume</a>
+    </div>
+  </nav>
+
+  <h1>Writing</h1>
+  <p class="role">Longer pieces — postmortems, architecture decisions, tradeoff analyses.</p>
+
+  <div class="section-label">Articles</div>
+
+  <div class="post">
+    <div class="post-date">Coming soon</div>
+    <h3>From cron sweep to delayed jobs: rebuilding recurring donations</h3>
+    <p>Why a single cron job sweeping every due charge eventually becomes a liability, and what it took to move each recurring donation to its own scheduled job.</p>
+  </div>
+
+  <div class="post">
+    <div class="post-date">Coming soon</div>
+    <h3>The wrong provider, the wrong signature: a payout pipeline postmortem</h3>
+    <p>A walk through diagnosing a silently-failing payout pipeline — bad routing, an HMAC mismatch, and what reconciliation should have caught sooner.</p>
+  </div>
+
+  <div class="post">
+    <div class="post-date">Coming soon</div>
+    <h3>Designing a two-tier trust model for unverified timesheets</h3>
+    <p>How a multi-tenant staffing platform handles the gap between "submitted" and "verified" work hours without blocking payroll.</p>
+  </div>
+
+  <p style="margin-top:32px; color: var(--muted); font-size:14.5px;">This list is intentionally short — these are queued, not published yet. New pieces show up here as they're written.</p>
+
+  <footer class="footer">
+    <p class="footer-quote">Writing is just debugging in prose.</p>
+    <div class="footer-meta" id="footer-meta">Lagos, NG · 2026</div>
+  </footer>
+
+</div>
+<script>
+  function tick() {
+    const el = document.getElementById('footer-meta');
+    if (!el) return;
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    el.textContent = time + ' · Lagos, NG · ' + now.getFullYear();
+  }
+  tick();
+  setInterval(tick, 30000);
+</script>
+</body>
+</html>
