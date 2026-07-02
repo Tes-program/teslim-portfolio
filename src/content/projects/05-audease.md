@@ -5,6 +5,7 @@ context: "NestJS · PostgreSQL"
 tags: ["EdTech", "PostgreSQL"]
 featured: false
 order: 5
+status: "discontinued"
 ---
 
 Built a Student Information Management System for a UK-based edtech company, covering core academic records and administrative workflows.

@@ -5,20 +5,31 @@ interface Props {
   context: string;
   dateRange?: string;
   tags: string[];
+  link?: string;
+  linkLabel?: string;
+  status?: 'live' | 'discontinued';
 }
 
-const { hash, title, context, dateRange, tags } = Astro.props;
+const { hash, title, context, dateRange, tags, link, linkLabel, status } = Astro.props;
 const meta = dateRange ? `${context} · ${dateRange}` : context;
 ---
 
 <div class="entry">
   <div class="entry-hash">{hash}</div>
   <div class="entry-body">
-    <h3>{title}</h3>
+    {status !== 'discontinued' && link ? (
+      <h3><a href={link} target="_blank" rel="noopener">{title}</a></h3>
+    ) : (
+      <h3>{title}</h3>
+    )}
     <div class="entry-meta">{meta}</div>
     <slot />
     <div class="tag-row">
       {tags.map((tag) => <span class="tag">{tag}</span>)}
     </div>
+    {status === 'discontinued' && <p class="entry-link entry-status">Discontinued</p>}
+    {status !== 'discontinued' && link && (
+      <p><a href={link} target="_blank" rel="noopener" class="entry-link">→ {linkLabel ?? 'view live'}</a></p>
+    )}
   </div>
 </div>

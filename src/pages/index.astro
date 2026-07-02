@@ -42,6 +42,9 @@ const rendered = await Promise.all(featured.map((entry) => render(entry)));
         context={entry.data.context}
         dateRange={entry.data.dateRange}
         tags={entry.data.tags}
+        link={entry.data.link}
+        linkLabel={entry.data.linkLabel}
+        status={entry.data.status}
       >
         <Content />
       </Entry>

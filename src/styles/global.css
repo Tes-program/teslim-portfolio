@@ -202,6 +202,10 @@ a:hover { text-decoration-color: var(--accent); }
   font-size: 12px;
 }
 
+.entry-status {
+  color: var(--muted);
+}
+
 /* ---- writing / log list ---- */
 .post {
   padding: 16px 0;

@@ -12,30 +12,50 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <div class="resume-block">
     <h2>Crowdr</h2>
-    <div class="resume-sub">Primary Backend Engineer · Remote</div>
+    <div class="resume-sub">Primary Backend Engineer · Remote · Jun 2025 – Present</div>
     <ul>
-      <li>Own the backend for a crowdfunding platform — payments, recurring donations, fraud detection, and observability.</li>
-      <li>Rebuilt recurring billing from a cron sweep to a per-record delayed job model on BullMQ.</li>
-      <li>Diagnosed and fixed a BudPay payout pipeline failure spanning provider routing and webhook signature verification.</li>
-      <li>Built a custom marketing email system on AWS SES, guest donor magic-link auth, and 2FA for admin accounts.</li>
+      <li>Designed a dual-provider payment system (Paystack and BudPay) on the Strategy pattern, with MongoDB-backed runtime switching, per-campaign provider overrides, and provider-tagged transactions for safe refund routing. ₦350M+ in donations processed to date.</li>
+      <li>Rebuilt recurring billing from a single cron sweep into a per-record delayed job model on BullMQ — no more missed charges, and every donation can now be scheduled independently across its lifecycle.</li>
+      <li>Diagnosed and fixed a BudPay payout pipeline failure spanning provider routing logic and webhook HMAC signature verification, with no manual reconciliation needed afterward.</li>
+      <li>Built a five-entry-type financial ledger with automated Paystack Transfer API disbursements, rate-limit-aware bulk refund processing, and full transaction reconciliation.</li>
+      <li>Built fraud detection with IP tracking and risk scoring. The BullMQ event-driven job architecture now handles 600K+ background jobs for webhooks, notifications, and analytics.</li>
+      <li>Set up the observability stack — Prometheus/Grafana Cloud push metrics, structured logging, Bull Board job monitoring, global exception filters, GitHub Actions CI/CD — and kept uptime at 99.8%.</li>
     </ul>
   </div>
 
   <div class="resume-block">
-    <h2>Baaraku</h2>
-    <div class="resume-sub">Backend Engineer · Remote</div>
+    <h2>Errandpay</h2>
+    <div class="resume-sub">Backend Engineer (Contract) · Remote · Jan 2026 – Present</div>
+    <p style="font-size: 14px; color: var(--muted); margin: -4px 0 8px;">Contracted to build Baaraku's staffing platform; scope later extended to its parent company Errandpay's Borderpal product.</p>
     <ul>
-      <li>Built a multi-tenant SaaS staffing platform from scratch with NestJS, Prisma, PostgreSQL, and Redis/BullMQ.</li>
-      <li>Shipped a Chrome Manifest V3 extension for time tracking with idle detection and heartbeat survival.</li>
-      <li>Designed a two-tier Trust/Verified timesheet model and an early-payout fee system on live FX rates.</li>
+      <li>Architected a multi-tenant SaaS staffing platform from scratch on NestJS and PostgreSQL, with Prisma-enforced tenant isolation, invite-based KYC onboarding, and fine-grained RBAC.</li>
+      <li>Built the payroll system in three parts: PayoutRecord/PayoutAdjustment models that lock after settlement and keep a signed audit trail, an admin console for period selection and per-candidate adjustments, and a candidate withdrawal flow with a no-double-pay rule.</li>
+      <li>Designed a two-tier Trust/Verified timesheet model with per-session approval, a weekly time-entry grid supporting three submission modes, and an early-payout fee system priced off live FX rates.</li>
+      <li>Shipped a Chrome Manifest V3 extension for time tracking with idle detection, heartbeat survival, and a signed session handoff to the web app.</li>
+      <li>Built JWT auth with refresh token rotation and theft detection, a Cloudflare R2 presigned upload pipeline, and AWS SES transactional email on BullMQ queue workers.</li>
+      <li>Also picked up fixes on Borderpal, Errandpay's KYC/KYB partner onboarding platform (C#/.NET 8 microservices): resolved staging auth failures on the InitiatePartnerKyc and AddSharedHolders endpoints, traced a null-reference exception in partner domain slug generation that was 400ing pre-migration partners, and shipped smaller fixes across the Backoffice, SharedLibrary, Partner, and Webhooks services.</li>
     </ul>
   </div>
 
   <div class="resume-block">
     <h2>Audease</h2>
-    <div class="resume-sub">Backend Engineer · UK-based EdTech</div>
+    <div class="resume-sub">Backend Engineer · UK-based EdTech · Remote · Apr 2024 – Jun 2025</div>
     <ul>
-      <li>Built a Student Information Management System using NestJS and PostgreSQL.</li>
+      <li>Built a Student Information Management System serving 1,000+ students across multiple institutions, on NestJS/TypeORM/PostgreSQL with 15+ feature modules covering auth, document handling, form submissions, and multi-dashboard views.</li>
+      <li>Designed RBAC with 11+ permission types to support recruitment, application processing, and certification workflows.</li>
+      <li>Built an automated email notification system for student lifecycle events that cut manual communication overhead by 75%.</li>
+      <li>Documented 100+ endpoints with Swagger/OpenAPI, and built advanced search, filtering, and pagination holding 99.9% query performance.</li>
+    </ul>
+  </div>
+
+  <div class="resume-block">
+    <h2>Freelance</h2>
+    <div class="resume-sub">Backend Engineer · Remote · 2024 – Present</div>
+    <ul>
+      <li>Architected Cirlo, a multi-module event management platform on NestJS/TypeORM/PostgreSQL, with Redis caching, multi-tier RBAC, Paystack payments, PDF ticket generation, and Google/Outlook calendar sync.</li>
+      <li>Self-managed Cirlo's production VPS end to end: Prometheus/Grafana observability, environment hardening, deployment pipelines.</li>
+      <li>Built the Yahshud AI chatbot backend — personalized context management, tiered model routing, and session persistence — on a strict $10/month inference budget through cost-aware model selection.</li>
+      <li>Built a voice assistant pipeline for Yahshud on OpenAI Whisper/TTS and LangChain document ingestion, plus an admin context dashboard on Mongoose with a Next.js management interface.</li>
     </ul>
   </div>
 

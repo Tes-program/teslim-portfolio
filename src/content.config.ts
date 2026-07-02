@@ -12,6 +12,9 @@ const projects = defineCollection({
     tags: z.array(z.string()),
     description: z.string().optional(),
     featured: z.boolean().optional(),
+    link: z.string().url().optional(),
+    linkLabel: z.string().optional(),
+    status: z.enum(['live', 'discontinued']).optional(),
     // Fixed display order for the project list — these entries don't have
     // a single sortable date (some are "ongoing"), so order is explicit.
     order: z.number(),
