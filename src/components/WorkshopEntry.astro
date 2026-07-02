@@ -1,0 +1,39 @@
+---
+interface Props {
+  slug: string;
+  number?: number;
+  title: string;
+  context?: string;
+  date?: Date;
+  tags?: string[];
+  summary: string;
+  status: 'coming-soon' | 'published';
+}
+
+const { slug, number, title, context, date, tags = [], summary, status } = Astro.props;
+const isPublished = status === 'published';
+const label = number ? `Design ${number}` : '';
+
+const metaParts = [
+  context,
+  isPublished && date ? date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : null,
+].filter(Boolean);
+const meta = metaParts.join(' · ');
+---
+
+<div class={`entry workshop-entry${isPublished ? '' : ' coming-soon'}`}>
+  <div class="entry-hash">{label}</div>
+  <div class="entry-body">
+    {isPublished ? (
+      <h3><a href={`/workshop/${slug}/`}>{title}</a></h3>
+    ) : (
+      <h3>{title}</h3>
+    )}
+    {meta && <div class="entry-meta">{meta}</div>}
+    <p>{summary}</p>
+    <div class="tag-row">
+      {!isPublished && <span class="tag">coming soon</span>}
+      {tags.map((tag) => <span class="tag">{tag}</span>)}
+    </div>
+  </div>
+</div>

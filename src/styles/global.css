@@ -228,6 +228,22 @@ a:hover { text-decoration-color: var(--accent); }
   margin: 0;
 }
 
+.post .tag-row {
+  margin-top: 8px;
+}
+
+.post h3.coming-soon,
+.post p.coming-soon {
+  color: var(--muted);
+}
+
+/* ---- coming-soon entries (workshop, and shared with writing) ---- */
+.workshop-entry.coming-soon .entry-hash,
+.workshop-entry.coming-soon h3,
+.workshop-entry.coming-soon .entry-body p {
+  color: var(--muted);
+}
+
 .log-entry {
   display: flex;
   gap: 16px;

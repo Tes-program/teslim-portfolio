@@ -32,9 +32,22 @@ const writing = defineCollection({
     title: z.string(),
     date: z.coerce.date().optional(),
     summary: z.string(),
-    status: z.enum(['published', 'queued']),
+    status: z.enum(['published', 'coming-soon']),
     order: z.number(),
   }),
 });
 
-export const collections = { projects, log, writing };
+const workshop = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/workshop' }),
+  schema: z.object({
+    title: z.string(),
+    number: z.number().optional(),
+    context: z.string().optional(),
+    status: z.enum(['coming-soon', 'published']),
+    date: z.coerce.date().optional(),
+    tags: z.array(z.string()).optional(),
+    summary: z.string(),
+  }),
+});
+
+export const collections = { projects, log, writing, workshop };

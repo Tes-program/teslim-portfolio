@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkshopEntry from '../components/WorkshopEntry.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('workshop')).sort((a, b) => (a.data.number ?? 0) - (b.data.number ?? 0));
+---
+
+<BaseLayout title="Workshop — Teslim" active="workshop">
+  <h1>Workshop</h1>
+  <p class="role">Design decisions, tradeoffs, and the paths not taken.</p>
+
+  <div class="section-label">Designs</div>
+
+  {entries.map((entry) => (
+    <WorkshopEntry
+      slug={entry.id}
+      number={entry.data.number}
+      title={entry.data.title}
+      context={entry.data.context}
+      date={entry.data.date}
+      tags={entry.data.tags}
+      summary={entry.data.summary}
+      status={entry.data.status}
+    />
+  ))}
+</BaseLayout>

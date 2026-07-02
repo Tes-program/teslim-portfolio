@@ -13,6 +13,10 @@ export const quotes: Quote[] = [
   { text: "Football is a simple game based on the giving and taking of passes.", attribution: 'Bill Shankly' },
   { text: 'You have to be at 100%, or else you’re gonna lose.', attribution: 'Lewis Hamilton' },
 
+  // Give me more of these, please. I want to see more quotes in the future.
+
+  { text: 'The only way to prove that you’re a good sport is to lose.', attribution: 'Ernie Banks' },
+
   // In-voice
   { text: 'Sorted by recency, not importance.' },
   { text: 'Writing is just debugging in prose.' },

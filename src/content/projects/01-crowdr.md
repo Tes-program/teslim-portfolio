@@ -8,4 +8,4 @@ featured: true
 order: 1
 ---
 
-Primary backend engineer on a crowdfunding platform. Rebuilt recurring billing from a cron-based sweep into a delayed-job model where each donation owns its own scheduled charge — better isolation, simpler retries. Also shipped guest donor magic-link auth, fraud/IP behavioral tracking, and a campaign flagging system.
+Primary backend engineer on a crowdfunding platform. Rebuilt recurring billing from a single cron sweep into a delayed-job model where each donation gets its own scheduled charge, which made retries a lot easier to reason about. Also shipped guest donor magic-link auth, fraud/IP behavioral tracking, and a campaign flagging system.

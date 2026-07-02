@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const published = await getCollection('workshop', ({ data }) => data.status === 'published');
+  return published.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const metaParts = [
+  entry.data.number ? `Design ${entry.data.number}` : null,
+  entry.data.context,
+  entry.data.date?.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+  entry.data.tags?.length ? entry.data.tags.join(', ') : null,
+].filter(Boolean);
+---
+
+<BaseLayout title={`${entry.data.title} — Teslim`} description={entry.data.summary} active="workshop">
+  <h1>{entry.data.title}</h1>
+  {metaParts.length > 0 && <div class="entry-meta" style="margin-bottom:24px;">{metaParts.join(' · ')}</div>}
+  <Content />
+</BaseLayout>
