@@ -587,11 +587,14 @@ a:hover { text-decoration-color: var(--accent); }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 175px;
   transition: color 0.15s ease;
 }
 
 .toc-tick.toc-depth-3 .tick-label {
   font-size: 10.5px;
+  max-width: 140px;
 }
 
 .toc-tick:hover .tick-label { color: var(--ink); }
