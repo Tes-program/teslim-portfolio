@@ -1,0 +1,45 @@
+---
+---
+
+<div class="lightbox" id="lightbox">
+  <img class="lightbox-image" alt="" />
+</div>
+
+<script>
+  const overlay = document.getElementById('lightbox');
+  const overlayImg = overlay?.querySelector('img');
+
+  function openLightbox(src, alt) {
+    if (!overlay || !overlayImg) return;
+    overlayImg.src = src;
+    overlayImg.alt = alt || '';
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (!overlay) return;
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  const images = document.querySelectorAll('.prose img, .cover-image');
+  images.forEach((img) => {
+    img.classList.add('zoomable');
+    img.setAttribute('tabindex', '0');
+    img.setAttribute('role', 'button');
+    img.setAttribute('aria-label', 'Enlarge image');
+    img.addEventListener('click', () => openLightbox(img.currentSrc || img.src, img.alt));
+    img.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLightbox(img.currentSrc || img.src, img.alt);
+      }
+    });
+  });
+
+  overlay?.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>

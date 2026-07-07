@@ -31,10 +31,18 @@ const log = defineCollection({
 
 const writing = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/writing' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
+    // Overrides the title-derived slug so a URL survives a later title edit.
+    slug: z.string().optional(),
     date: z.coerce.date().optional(),
+    updatedDate: z.coerce.date().optional(),
     summary: z.string(),
+    dek: z.string().optional(),
+    // Falls back to `summary` for the meta description when absent.
+    description: z.string().optional(),
+    coverImage: image().optional(),
+    tags: z.array(z.string()).optional(),
     status: z.enum(['published', 'coming-soon']),
     order: z.number(),
   }),

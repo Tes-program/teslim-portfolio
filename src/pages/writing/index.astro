@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { getWritingSlug } from '../../utils/slug';
 
 const entries = (await getCollection('writing')).sort((a, b) => {
   if (a.data.status === 'published' && b.data.status === 'published') {
@@ -29,7 +30,7 @@ const hasComingSoon = entries.some((e) => e.data.status === 'coming-soon');
           </div>
         )}
         {isPublished ? (
-          <h3><a href={`/writing/${entry.id}/`}>{entry.data.title}</a></h3>
+          <h3><a href={`/writing/${getWritingSlug(entry)}/`}>{entry.data.title}</a></h3>
         ) : (
           <h3 class="coming-soon">{entry.data.title}</h3>
         )}

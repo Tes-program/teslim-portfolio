@@ -1,23 +1,77 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleToc from '../../components/ArticleToc.astro';
+import ImageLightbox from '../../components/ImageLightbox.astro';
+import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
+import { getWritingSlug } from '../../utils/slug';
+import { readingTime } from '../../utils/readingTime';
 
 export async function getStaticPaths() {
   const published = await getCollection('writing', ({ data }) => data.status === 'published');
   return published.map((entry) => ({
-    params: { slug: entry.id },
+    params: { slug: getWritingSlug(entry) },
     props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { data, body } = entry;
+const { Content, headings } = await render(entry);
+
+const slug = getWritingSlug(entry);
+const description = data.description ?? data.summary;
+const minutes = readingTime(body);
+
+const dateLabel = data.date?.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const updatedLabel = data.updatedDate?.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const showUpdated = Boolean(updatedLabel && updatedLabel !== dateLabel);
+
+const metaParts = [
+  dateLabel,
+  showUpdated ? `updated ${updatedLabel}` : null,
+  `${minutes} min read`,
+  data.tags && data.tags.length > 0 ? data.tags.join(', ') : null,
+].filter(Boolean);
+
+const coverImageURL = data.coverImage ? new URL(data.coverImage.src, Astro.site).toString() : undefined;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: data.title,
+  description,
+  ...(data.date && { datePublished: data.date.toISOString() }),
+  ...(data.updatedDate && { dateModified: data.updatedDate.toISOString() }),
+  author: { '@type': 'Person', name: 'Teslim' },
+  ...(coverImageURL && { image: coverImageURL }),
+};
 ---
 
-<BaseLayout title={`${entry.data.title} — Teslim`} description={entry.data.summary} active="writing">
-  <h1>{entry.data.title}</h1>
-  <p class="role">
-    {entry.data.date?.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-  </p>
-  <Content />
+<BaseLayout
+  title={`${data.title} — Teslim`}
+  description={description}
+  active="writing"
+  canonicalPath={`/writing/${slug}/`}
+  image={data.coverImage?.src}
+  type="article"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <h1>{data.title}</h1>
+  {data.dek && <p class="dek">{data.dek}</p>}
+  <p class="entry-meta">{metaParts.join(' · ')}</p>
+
+  {data.coverImage && (
+    <Image src={data.coverImage} alt={data.title} loading="eager" class="cover-image" />
+  )}
+
+  <div class="prose">
+    <Content />
+  </div>
+
+  <ArticleToc headings={headings} />
+  <ImageLightbox />
 </BaseLayout>
