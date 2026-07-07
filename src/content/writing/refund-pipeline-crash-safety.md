@@ -8,7 +8,7 @@ order: 1
 date: 2026-07-07
 tags: ["payments", "distributed-systems", "postmortems", "nestjs"]
 summary: "How a synchronous-looking refund flow hid a crash window that
-  could silently lose a completed refund — and the state machine,
+  could silently lose a completed refund, and the state machine,
   idempotency, and atomic-claim fixes that closed it."
 coverImage: "./images/refund-pipeline-cover.png"
 ---
@@ -17,19 +17,19 @@ I work on a crowdfunding platform, and for months our refund service looked soli
 
 ## Why it mattered
 
-A refund that silently disappears isn't just a rounding error. It's a backer emailing support asking where their money went, an operations person re-running a refund that already happened, and eventually a duplicate payout or a chargeback dispute nobody can explain from the logs. None of this required unusual traffic or a malicious actor just a routine pod restart during a deploy was enough.
+A refund that silently disappears isn't just a rounding error. It's a backer emailing support asking where their money went, an operations person re-running a refund that already happened, and eventually a duplicate payout or a chargeback dispute nobody can explain from the logs. None of this required unusual traffic or a malicious actor. A routine pod restart during a deploy was enough.
 
 ## The flaw, precisely
 
-The refund flow looked synchronous from the outside: call the initiate-refund endpoint, get a `PROCESSING` refund back, wait for a webhook. What actually happened underneath was riskier. The service called Paystack directly, inline, before anything touched the queue. The queue only wrapped the webhook *confirmation* step — writing the outcome once Paystack called back. If the process crashed after the outbound call left our servers but before we persisted that we'd made it, the refund existed on Paystack's side and nowhere on ours. Retrying wasn't safe, because we had no record to check against. Not retrying meant a real refund with no trace.
+The refund flow looked synchronous from the outside: call the initiate-refund endpoint, get a `PROCESSING` refund back, wait for a webhook. What actually happened underneath was riskier. The service called Paystack directly, inline, before anything touched the queue. The queue only wrapped the webhook *confirmation* step, writing the outcome once Paystack called back. If the process crashed after the outbound call left our servers but before we persisted that we'd made it, the refund existed on Paystack's side and nowhere on ours. Retrying wasn't safe, because we had no record to check against. Not retrying meant a real refund with no trace.
 
 ## System Design
 
-The fix moves the boundary of "durable" earlier — the outbound call has to happen *inside* a claimed, persisted attempt, not before one exists. The diagram below is the corrected shape: a service that claims a refund atomically before it queues anything, a queue that now owns the call to Paystack itself rather than just its confirmation, and a `NEEDS_ATTENTION` branch for refunds that fail for reasons a retry can't fix which includes a bad bank details, mostly.
+The fix moves the boundary of "durable" earlier. The outbound call has to happen *inside* a claimed, persisted attempt, not before one exists. The diagram below is the corrected shape: a service that claims a refund atomically before it queues anything, a queue that now owns the call to Paystack itself rather than just its confirmation, and a `NEEDS_ATTENTION` branch for refunds that fail for reasons a retry can't fix, like bad bank details.
 
 ![Refund service architecture: rectangles are internal services, diamonds are external APIs/queues, ellipses are datastores, the orange dashed path is the needs-attention bank-details flow.](./images/refund-system-design.png)
 
-The important change isn't a new box on the diagram, it's that the atomic claim and the queue now wrap *initiation*, not just the webhook callback. A refund can't leave `INITIATED` without a persisted, uniquely-claimed `PENDING` row, and the call to Paystack only happens after that row exists. There's no window left where the outbound call can succeed without something on our side already knowing it was attempted.
+Nothing new was added to the diagram. What changed is where the atomic claim and the queue kick in: at initiation, not just the webhook callback. A refund can't leave `INITIATED` without a persisted, uniquely-claimed `PENDING` row, and the call to Paystack only happens after that row exists. There's no window left where the outbound call can succeed without something on our side already knowing it was attempted.
 
 ## Closing the gap
 
@@ -37,7 +37,7 @@ Three changes did most of the work.
 
 ### An explicit state machine
 
-Refunds moved through statuses implicitly before — inferred from a mix of flags and null checks. Making the states explicit, and making illegal transitions a runtime error instead of a possibility, killed a whole category of "wait, how did this get here" debugging sessions.
+Refunds used to move through statuses implicitly, inferred from a mix of flags and null checks. Making the states explicit, and making illegal transitions a runtime error instead of a possibility, killed a whole category of "wait, how did this get here" debugging sessions.
 
 ```ts
 enum RefundStatus {
@@ -77,7 +77,7 @@ schema.index(
 
 ### Atomic claims, not application locks
 
-The original "lock" was a boolean flag the application set before doing anything else which is fine until the process died between setting the flag and clearing it, which left the refund stuck locked forever. Replacing it with a single atomic update, scoped to the exact state we expect, means either we claimed it or we didn't. There's no in-between state a crash can strand us in.
+The original "lock" was a boolean flag the application set before doing anything else. That held up fine until the process died between setting the flag and clearing it, leaving the refund stuck locked forever. Replacing it with a single atomic update, scoped to the exact state we expect, means either we claimed it or we didn't. There's no in-between state a crash can strand us in.
 
 ```ts
 const claimed = await this.refundModel.findOneAndUpdate(
@@ -87,14 +87,14 @@ const claimed = await this.refundModel.findOneAndUpdate(
 );
 
 if (!claimed) {
-  return; // already claimed, or already past INITIATED — nothing to do
+  return; // already claimed, or already past INITIATED
 }
 ```
 
 ## What we left out
 
-Chargebacks and transfer reversals aren't handled by any of this — they go through a separate, older path we didn't touch. That wasn't mostly an oversight; it was just a scoping call. Rebuilding this pipeline for crash-safety was already a big enough change to reason about and test properly, and folding in two more failure-prone flows would have made the review process worse without making the fix any safer. They're next, not forgotten.
+Chargebacks and transfer reversals aren't handled by any of this. They go through a separate, older path we didn't touch. That wasn't an oversight, it was a scoping call. Rebuilding this pipeline for crash-safety was already a big enough change to reason about and test properly, and folding in two more failure-prone flows would have made the review process worse without making the fix any safer. They're next, not forgotten.
 
 ## The takeaway
 
-Crash-safety isn't just about handling errors properly. It's also about making sure nothing important can happen without something durable recording that it happened first ensuring that a crash can't leave you in a state where the world has moved on but your system has no record of it. In this case, that meant moving the outbound call to Paystack inside a claimed, persisted attempt, making the state machine explicit, scoping idempotency keys correctly, and replacing application locks with atomic claims. The result is a refund pipeline that can survive crashes without losing track of real refunds.
+The real fix here wasn't more error handling. It was making sure we wrote down that we were about to try something before we tried it.
