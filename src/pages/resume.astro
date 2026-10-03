@@ -1,82 +1,207 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Resume — Teslim" active="resume">
-  <h1>Resume</h1>
-  <p class="role">Backend Engineer — Payments &amp; Fintech Infrastructure</p>
+    <h1>Resume</h1>
+    <p class="role">Backend Engineer — Payments &amp; Fintech Infrastructure</p>
 
-  <p><a href="https://docs.google.com/document/d/e/2PACX-1vQEGgJJPgNOl2rtp21XD413tUy525W-usaYaGPb6unv5q3CvmKjhMVvNULUWGABEFg8966O_5vPw0pZ/pub" target="_blank" rel="noopener">→ View resume</a></p>
+    <p>
+        <a
+            href="https://docs.google.com/document/d/e/2PACX-1vRURjksnCRfVfSR8JHjA89s8poVaAcQp33xWqVNEWWDIqaQks4BOhXPR4jEf1VnINJsSb1ldmZzrXBQ/pub"
+            target="_blank"
+            rel="noopener"
+        >
+            → View resume
+        </a>
+    </p>
 
-  <div class="section-label">Experience</div>
+    <div class="section-label">Experience</div>
 
-  <div class="resume-block">
-    <h2>Crowdr</h2>
-    <div class="resume-sub">Primary Backend Engineer · Remote · Jun 2025 – Present</div>
-    <ul>
-      <li>Designed a dual-provider payment system (Paystack and BudPay) on the Strategy pattern, with MongoDB-backed runtime switching, per-campaign provider overrides, and provider-tagged transactions for safe refund routing. ₦350M+ in donations processed to date.</li>
-      <li>Rebuilt recurring billing from a single cron sweep into a per-record delayed job model on BullMQ — no more missed charges, and every donation can now be scheduled independently across its lifecycle.</li>
-      <li>Diagnosed and fixed a BudPay payout pipeline failure spanning provider routing logic and webhook HMAC signature verification, with no manual reconciliation needed afterward.</li>
-      <li>Built a five-entry-type financial ledger with automated Paystack Transfer API disbursements, rate-limit-aware bulk refund processing, and full transaction reconciliation.</li>
-      <li>Built fraud detection with IP tracking and risk scoring. The BullMQ event-driven job architecture now handles 600K+ background jobs for webhooks, notifications, and analytics.</li>
-      <li>Set up the observability stack — Prometheus/Grafana Cloud push metrics, structured logging, Bull Board job monitoring, global exception filters, GitHub Actions CI/CD — and kept uptime at 99.8%.</li>
-    </ul>
-  </div>
+    <div class="resume-block">
+        <h2>Crowdr</h2>
+        <div class="resume-sub">
+            Primary Backend Engineer · Remote · Jun 2025 – Present
+        </div>
+        <ul>
+            <li>
+                Designed a dual-provider payment system (Paystack and BudPay) on
+                the Strategy pattern, with MongoDB-backed runtime switching,
+                per-campaign provider overrides, and provider-tagged
+                transactions for safe refund routing. ₦350M+ in donations
+                processed to date.
+            </li>
+            <li>
+                Rebuilt recurring billing from a single cron sweep into a
+                per-record delayed job model on BullMQ — no more missed charges,
+                and every donation can now be scheduled independently across its
+                lifecycle.
+            </li>
+            <li>
+                Diagnosed and fixed a BudPay payout pipeline failure spanning
+                provider routing logic and webhook HMAC signature verification,
+                with no manual reconciliation needed afterward.
+            </li>
+            <li>
+                Built a five-entry-type financial ledger with automated Paystack
+                Transfer API disbursements, rate-limit-aware bulk refund
+                processing, and full transaction reconciliation.
+            </li>
+            <li>
+                Built fraud detection with IP tracking and risk scoring. The
+                BullMQ event-driven job architecture now handles 600K+
+                background jobs for webhooks, notifications, and analytics.
+            </li>
+            <li>
+                Set up the observability stack — Prometheus/Grafana Cloud push
+                metrics, structured logging, Bull Board job monitoring, global
+                exception filters, GitHub Actions CI/CD — and kept uptime at
+                99.8%.
+            </li>
+            <li>
+                Cut campaign page load times from as long as 15 seconds to under
+                200 milliseconds across more than 9,500 campaigns by replacing
+                live MongoDB aggregations with cached donation, donor, and
+                view-count fields that update atomically on write.
+            </li>
+        </ul>
+    </div>
 
-  <div class="resume-block">
-    <h2>Errandpay</h2>
-    <div class="resume-sub">Backend Engineer (Contract) · Remote · Jan 2026 – Present</div>
-    <p style="font-size: 14px; color: var(--muted); margin: -4px 0 8px;">Contracted to build Baaraku's staffing platform; scope later extended to its parent company Errandpay's Borderpal product.</p>
-    <ul>
-      <li>Architected a multi-tenant SaaS staffing platform from scratch on NestJS and PostgreSQL, with Prisma-enforced tenant isolation, invite-based KYC onboarding, and fine-grained RBAC.</li>
-      <li>Built the payroll system in three parts: PayoutRecord/PayoutAdjustment models that lock after settlement and keep a signed audit trail, an admin console for period selection and per-candidate adjustments, and a candidate withdrawal flow with a no-double-pay rule.</li>
-      <li>Designed a two-tier Trust/Verified timesheet model with per-session approval, a weekly time-entry grid supporting three submission modes, and an early-payout fee system priced off live FX rates.</li>
-      <li>Shipped a Chrome Manifest V3 extension for time tracking with idle detection, heartbeat survival, and a signed session handoff to the web app.</li>
-      <li>Built JWT auth with refresh token rotation and theft detection, a Cloudflare R2 presigned upload pipeline, and AWS SES transactional email on BullMQ queue workers.</li>
-      <li>Also picked up fixes on Borderpal, Errandpay's KYC/KYB partner onboarding platform (C#/.NET 8 microservices): resolved staging auth failures on the InitiatePartnerKyc and AddSharedHolders endpoints, traced a null-reference exception in partner domain slug generation that was 400ing pre-migration partners, and shipped smaller fixes across the Backoffice, SharedLibrary, Partner, and Webhooks services.</li>
-    </ul>
-  </div>
+    <div class="resume-block">
+        <h2>Baaraku</h2>
+        <div class="resume-sub">
+            Backend Engineer (Contract, Part-time) · Remote · Jan 2026 – Present
+        </div>
+        <p style="font-size: 14px; color: var(--muted); margin: -4px 0 8px;">
+            Contracted to build Baaraku's staffing platform; scope later
+            extended to its parent company Errandpay's Borderpal product.
+        </p>
+        <ul>
+            <li>
+                Architected a multi-tenant SaaS staffing platform from scratch
+                on NestJS and PostgreSQL, with Prisma-enforced tenant isolation,
+                invite-based KYC onboarding, and fine-grained RBAC.
+            </li>
+            <li>
+                Built the payroll system end-to-end: settlement-locked
+                PayoutRecord and PayoutAdjustment models with a signed audit
+                trail, an admin console for period selection and adjustments,
+                and a candidate withdrawal flow that blocks double payment. The
+                system now disburses over 30 million naira in staff salaries
+                every month.
+            </li>
+            <li>
+                Designed a two-tier Trust/Verified timesheet model with
+                per-session approval, a weekly time-entry grid supporting three
+                submission modes, and an early-payout fee system priced off live
+                FX rates.
+            </li>
+            <li>
+                Shipped a Chrome Manifest V3 extension for time tracking with
+                idle detection, heartbeat survival, and a signed session handoff
+                to the web app.
+            </li>
+            <li>
+                Also picked up fixes on Borderpal, Errandpay's KYC/KYB partner
+                onboarding platform (C#/.NET 8 microservices): resolved staging
+                auth failures on the InitiatePartnerKyc and AddSharedHolders
+                endpoints, traced a null-reference exception in partner domain
+                slug generation that was 400ing pre-migration partners, and
+                shipped smaller fixes across the Backoffice, SharedLibrary,
+                Partner, and Webhooks services.
+            </li>
+        </ul>
+    </div>
 
-  <div class="resume-block">
-    <h2>Audease</h2>
-    <div class="resume-sub">Backend Engineer · UK-based EdTech · Remote · Apr 2024 – Jun 2025</div>
-    <ul>
-      <li>Built a Student Information Management System serving 1,000+ students across multiple institutions, on NestJS/TypeORM/PostgreSQL with 15+ feature modules covering auth, document handling, form submissions, and multi-dashboard views.</li>
-      <li>Designed RBAC with 11+ permission types to support recruitment, application processing, and certification workflows.</li>
-      <li>Built an automated email notification system for student lifecycle events that cut manual communication overhead by 75%.</li>
-      <li>Documented 100+ endpoints with Swagger/OpenAPI, and built advanced search, filtering, and pagination holding 99.9% query performance.</li>
-    </ul>
-  </div>
+    <div class="resume-block">
+        <h2>Audease</h2>
+        <div class="resume-sub">
+            Backend Engineer · UK-based EdTech · Remote · Apr 2024 – Jun 2025
+        </div>
+        <ul>
+            <li>
+                Built a Student Information Management System serving 1,000+
+                students across multiple institutions, on
+                NestJS/TypeORM/PostgreSQL with 15+ feature modules covering
+                auth, document handling, form submissions, and multi-dashboard
+                views.
+            </li>
+            <li>
+                Designed RBAC with 11+ permission types to support recruitment,
+                application processing, and certification workflows.
+            </li>
+            <li>
+                Built an automated email notification system for student
+                lifecycle events that cut manual communication overhead by 75%.
+            </li>
+            <li>
+                Documented 100+ endpoints with Swagger/OpenAPI, and built
+                advanced search, filtering, and pagination holding 99.9% query
+                performance.
+            </li>
+        </ul>
+    </div>
 
-  <div class="resume-block">
-    <h2>Freelance</h2>
-    <div class="resume-sub">Backend Engineer · Remote · 2024 – Present</div>
-    <ul>
-      <li>Architected Cirlo, a multi-module event management platform on NestJS/TypeORM/PostgreSQL, with Redis caching, multi-tier RBAC, Paystack payments, PDF ticket generation, and Google/Outlook calendar sync.</li>
-      <li>Self-managed Cirlo's production VPS end to end: Prometheus/Grafana observability, environment hardening, deployment pipelines.</li>
-      <li>Built the Yahshud AI chatbot backend — personalized context management, tiered model routing, and session persistence — on a strict $10/month inference budget through cost-aware model selection.</li>
-      <li>Built a voice assistant pipeline for Yahshud on OpenAI Whisper/TTS and LangChain document ingestion, plus an admin context dashboard on Mongoose with a Next.js management interface.</li>
-    </ul>
-  </div>
+    <div class="resume-block">
+        <h2>Freelance</h2>
+        <div class="resume-sub">Backend Engineer · Remote · 2024 – Present</div>
+        <ul>
+            <li>
+                Architected Cirlo, a multi-module event management platform on
+                NestJS/TypeORM/PostgreSQL, with Redis caching, multi-tier RBAC,
+                Paystack payments, PDF ticket generation, and Google/Outlook
+                calendar sync.
+            </li>
+            <li>
+                Self-managed Cirlo's production VPS end to end:
+                Prometheus/Grafana observability, environment hardening,
+                deployment pipelines.
+            </li>
+            <li>
+                Built the Yahshud AI chatbot backend — personalized context
+                management, tiered model routing, and session persistence — on a
+                strict $10/month inference budget through cost-aware model
+                selection.
+            </li>
+            <li>
+                Built a voice assistant pipeline for Yahshud on OpenAI
+                Whisper/TTS and LangChain document ingestion, plus an admin
+                context dashboard on Mongoose with a Next.js management
+                interface.
+            </li>
+        </ul>
+    </div>
 
-  <div class="section-label">Education &amp; Training</div>
+    <div class="section-label">Education &amp; Training</div>
 
-  <div class="resume-block">
-    <h2>Moniepoint DreamDevs Bootcamp</h2>
-    <div class="resume-sub">2026</div>
-    <ul>
-      <li>Capstone: CareRound, a multi-tenant hospital ward management SaaS in Java 21 / Spring Boot / Kafka, using the transactional outbox pattern. Deployed to EC2 with Docker Compose.</li>
-    </ul>
-  </div>
+    <div class="resume-block">
+        <h2>Moniepoint DreamDevs Bootcamp</h2>
+        <div class="resume-sub">2026</div>
+        <ul>
+            <li>
+                Capstone: CareRound, a multi-tenant hospital ward management
+                SaaS in Java 21 / Spring Boot / Kafka, using the transactional
+                outbox pattern. Deployed to EC2 with Docker Compose.
+            </li>
+        </ul>
+    </div>
 
-  <div class="resume-block">
-    <h2>Babcock University</h2>
-    <div class="resume-sub">B.Sc. Information Technology · GPA 4.21/5.0</div>
-    <ul>
-      <li>Published research on Ethereum-based academic credential verification in the ADCAIJ journal.</li>
-    </ul>
-  </div>
+    <div class="resume-block">
+        <h2>Babcock University</h2>
+        <div class="resume-sub">
+            B.Sc. Information Technology · GPA 4.21/5.0
+        </div>
+        <ul>
+            <li>
+                Published research on Ethereum-based academic credential
+                verification in the ADCAIJ journal.
+            </li>
+        </ul>
+    </div>
 
-  <div class="section-label">Stack</div>
-  <p style="font-family: var(--mono); font-size: 13px; color: var(--muted);">TypeScript · NestJS · Java · Spring Boot · PostgreSQL · MongoDB · Redis · BullMQ · Kafka · AWS SES · Docker</p>
+    <div class="section-label">Stack</div>
+    <p style="font-family: var(--mono); font-size: 13px; color: var(--muted);">
+        TypeScript · NestJS · Java · Spring Boot · PostgreSQL · MongoDB · Redis
+        · BullMQ · Kafka · AWS SES · Docker
+    </p>
 </BaseLayout>
